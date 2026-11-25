@@ -9,643 +9,155 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --ink: #20302d;
-            --muted: #65706b;
-            --paper: #f5f3ed;
-            --white: #fffefa;
-            --green: #355b4e;
-            --green-dark: #24463b;
-            --coral: #c65e43;
-            --yellow: #e6bd63;
-            --line: #dedfd6;
+        :root { --ink:#20302d; --muted:#65706b; --paper:#f5f3ed; --white:#fffefa; --green:#355b4e; --green-dark:#24463b; --coral:#c65e43; --yellow:#e6bd63; --line:#dedfd6; }
+        * { box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { margin:0; color:var(--ink); background:var(--paper); font-family:"DM Sans",sans-serif; }
+        a { color:inherit; }
+        .site-header { min-height:76px; padding:12px 6vw; display:flex; align-items:center; justify-content:space-between; gap:24px; background:var(--white); }
+        .brand { display:grid; text-decoration:none; font-weight:700; font-size:19px; }
+        .brand span { color:var(--muted); font-size:11px; font-weight:500; }
+        .main-nav { display:flex; align-items:center; gap:30px; font-size:14px; }
+        .main-nav a { text-decoration:none; }
+        .main-nav a:hover { color:var(--coral); }
+        .cart-link { padding:10px 15px; border:1px solid var(--line); border-radius:4px; font-weight:600; white-space:nowrap; }
+        .hero { min-height:460px; display:flex; align-items:center; padding:64px 10vw; color:white; background-image:linear-gradient(90deg,rgba(20,35,31,.82),rgba(20,35,31,.2)),url("gitarre-1.jpg"); background-position:center 54%; background-size:cover; }
+        .hero-copy { max-width:610px; animation:arrive .7s ease-out both; }
+        .eyebrow { margin:0 0 16px; color:var(--yellow); font-size:12px; font-weight:700; text-transform:uppercase; }
+        h1,h2,h3,p { margin-top:0; }
+        h1,h2,h3 { font-family:Fraunces,Georgia,serif; font-weight:500; }
+        h1 { max-width:600px; margin-bottom:18px; font-size:64px; line-height:1.02; }
+        h1 em { color:var(--yellow); }
+        .hero-copy>p:not(.eyebrow) { max-width:480px; margin-bottom:28px; color:#f0eee7; font-size:17px; line-height:1.7; }
+        .button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; padding:0 20px; border:0; border-radius:3px; background:var(--coral); color:white; font:inherit; font-size:14px; font-weight:700; text-decoration:none; cursor:pointer; transition:background .2s ease,transform .2s ease; }
+        .button:hover { background:#a94832; transform:translateY(-1px); }
+        .button:focus-visible,a:focus-visible,button:focus-visible { outline:3px solid var(--yellow); outline-offset:3px; }
+        main,.cart-section { max-width:1240px; margin:0 auto; padding:76px 32px 88px; }
+        .section-heading { margin-bottom:30px; display:flex; align-items:end; justify-content:space-between; gap:24px; }
+        .section-heading h2,.about-copy h2,.cart-section h2 { margin-bottom:8px; font-size:38px; }
+        .section-heading p,.about-copy p { margin-bottom:0; color:var(--muted); line-height:1.7; }
+        .product-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
+        .product { overflow:hidden; background:var(--white); border:1px solid var(--line); border-radius:5px; animation:arrive .6s ease-out both; }
+        .product img,.gallery-card img { width:100%; aspect-ratio:4/3; display:block; object-fit:cover; background:#d8d5ca; }
+        .product-image-wrap { position:relative; touch-action:pan-y; }
+        .product-image-wrap img { cursor:grab; user-select:none; }
+        .image-swap-button { position:absolute; right:12px; bottom:12px; min-height:40px; padding:0 12px; border:0; border-radius:3px; background:var(--green); color:white; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+        .image-swap-button:hover { background:var(--green-dark); }
+        .product-info { padding:20px; }
+        .product-kind { margin-bottom:7px; color:var(--coral); font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+        .product h3 { margin-bottom:8px; font-size:25px; }
+        .product-description { min-height:48px; margin-bottom:18px; color:var(--muted); font-size:14px; line-height:1.6; }
+        .product-buy { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .price { font-size:18px; font-weight:700; white-space:nowrap; }
+        .product-buy .button { min-height:42px; padding:0 14px; font-size:13px; }
+        .gallery-section { margin-top:72px; }
+        .gallery-section h2 { margin-bottom:8px; font-size:38px; }
+        .gallery-intro { margin-bottom:24px; color:var(--muted); line-height:1.7; }
+        .gallery-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+        .gallery-card { overflow:hidden; background:var(--white); border:1px solid var(--line); border-radius:5px; }
+        .gallery-card img { aspect-ratio:4/3; }
+        .gallery-card p { margin:0; padding:12px 14px; font-weight:600; }
+        .download-row { margin-top:24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+        .download-help { margin:0; color:var(--muted); font-size:13px; }
+        .about-band { padding:52px max(32px,calc((100% - 1176px)/2)); display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:48px; background:#e7e9df; }
+        .about-mark { min-height:230px; display:grid; place-items:center; background:var(--green); color:var(--yellow); font-family:Fraunces,Georgia,serif; font-size:34px; text-align:center; }
+        .about-copy h2 { margin-top:8px; }
+        .cart-panel { padding:24px; background:var(--white); border:1px solid var(--line); border-radius:5px; }
+        .cart-items { margin:0; padding:0; list-style:none; }
+        .cart-item { padding:14px 0; display:flex; align-items:center; justify-content:space-between; gap:18px; border-bottom:1px solid var(--line); }
+        .cart-item-name { font-weight:600; }
+        .cart-item-detail { color:var(--muted); font-size:14px; }
+        .remove-button { padding:8px 0 8px 12px; border:0; background:transparent; color:var(--coral); font:inherit; font-size:13px; cursor:pointer; }
+        .cart-summary { padding-top:20px; display:flex; justify-content:space-between; gap:16px; font-weight:700; }
+        .cart-empty,.demo-note { color:var(--muted); line-height:1.6; }
+        .demo-note { margin:16px 0 0; font-size:12px; }
+        footer { padding:28px 6vw; display:flex; justify-content:space-between; gap:20px; background:var(--ink); color:white; font-size:13px; }
+        footer p { margin:0; }
+        @keyframes arrive { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+        @media(max-width:760px) {
+            .site-header { min-height:68px; padding:12px 20px; flex-wrap:wrap; }
+            .main-nav { order:3; width:100%; justify-content:space-between; gap:12px; padding:8px 0 2px; }
+            .hero { min-height:420px; padding:54px 24px; background-position:58% center; }
+            h1 { font-size:46px; }
+            main,.cart-section { padding:54px 20px; }
+            .section-heading { align-items:start; flex-direction:column; }
+            .section-heading h2,.about-copy h2,.cart-section h2,.gallery-section h2 { font-size:32px; }
+            .product-grid { grid-template-columns:1fr; gap:16px; }
+            .product-description { min-height:auto; }
+            .gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+            .about-band { padding:36px 20px; grid-template-columns:1fr; gap:28px; }
+            .about-mark { min-height:170px; }
+            footer { flex-direction:column; }
         }
-
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            margin: 0;
-            color: var(--ink);
-            background: var(--paper);
-            font-family: "DM Sans", sans-serif;
-        }
-
-        a { color: inherit; }
-
-        .site-header {
-            min-height: 76px;
-            padding: 0 6vw;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            background: var(--white);
-        }
-
-        .brand {
-            display: grid;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 19px;
-        }
-
-        .brand span {
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .main-nav {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            font-size: 14px;
-        }
-
-        .main-nav a { text-decoration: none; }
-        .main-nav a:hover { color: var(--coral); }
-
-        .cart-link {
-            padding: 10px 15px;
-            border: 1px solid var(--line);
-            border-radius: 4px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .hero {
-            min-height: 460px;
-            display: flex;
-            align-items: center;
-            padding: 64px 10vw;
-            color: white;
-            background-image:
-                linear-gradient(90deg, rgba(20, 35, 31, .82), rgba(20, 35, 31, .2)),
-                url("gitarre-1.jpg");
-            background-position: center 54%;
-            background-size: cover;
-        }
-
-        .hero-copy {
-            max-width: 610px;
-            animation: arrive .7s ease-out both;
-        }
-
-        .eyebrow {
-            margin: 0 0 16px;
-            color: var(--yellow);
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        h1, h2, h3, p { margin-top: 0; }
-
-        h1, h2, h3 {
-            font-family: Fraunces, Georgia, serif;
-            font-weight: 500;
-        }
-
-        h1 {
-            max-width: 600px;
-            margin-bottom: 18px;
-            font-size: 64px;
-            line-height: 1.02;
-        }
-
-        h1 em {
-            color: var(--yellow);
-            font-weight: 500;
-        }
-
-        .hero-copy > p:not(.eyebrow) {
-            max-width: 480px;
-            margin-bottom: 28px;
-            color: #f0eee7;
-            font-size: 17px;
-            line-height: 1.7;
-        }
-
-        .button {
-            min-height: 48px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 20px;
-            border: 0;
-            border-radius: 3px;
-            background: var(--coral);
-            color: white;
-            font: inherit;
-            font-size: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background .2s ease, transform .2s ease;
-        }
-
-        .button:hover {
-            background: #a94832;
-            transform: translateY(-1px);
-        }
-
-        .button:focus-visible,
-        a:focus-visible {
-            outline: 3px solid var(--yellow);
-            outline-offset: 3px;
-        }
-
-        main {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 76px 32px 88px;
-        }
-
-        .section-heading {
-            margin-bottom: 30px;
-            display: flex;
-            align-items: end;
-            justify-content: space-between;
-            gap: 24px;
-        }
-
-        .section-heading h2,
-        .about-copy h2,
-        .cart-section h2 {
-            margin-bottom: 8px;
-            font-size: 38px;
-        }
-
-        .section-heading p,
-        .about-copy p {
-            margin-bottom: 0;
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 22px;
-        }
-
-        .product {
-            overflow: hidden;
-            background: var(--white);
-            border: 1px solid var(--line);
-            border-radius: 5px;
-            animation: arrive .6s ease-out both;
-        }
-
-        .product:nth-child(2) { animation-delay: .1s; }
-        .product:nth-child(3) { animation-delay: .2s; }
-
-        .product img {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            display: block;
-            object-fit: cover;
-            background: #d8d5ca;
-        }
-
-        .product-image-wrap {
-            position: relative;
-            touch-action: pan-y;
-        }
-
-        .product-image-wrap img {
-            cursor: grab;
-            user-select: none;
-        }
-
-        .image-swap-button {
-            position: absolute;
-            right: 12px;
-            bottom: 12px;
-            min-height: 40px;
-            padding: 0 12px;
-            border: 0;
-            border-radius: 3px;
-            background: var(--green);
-            color: white;
-            font: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .image-swap-button:hover { background: var(--green-dark); }
-
-        .image-swap-button:focus-visible {
-            outline: 3px solid var(--yellow);
-            outline-offset: 3px;
-        }
-
-        .product-info { padding: 20px; }
-
-        .product-kind {
-            margin-bottom: 7px;
-            color: var(--coral);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .product h3 {
-            margin-bottom: 8px;
-            font-size: 25px;
-        }
-
-        .product-description {
-            min-height: 48px;
-            margin-bottom: 18px;
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .product-buy {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .price {
-            font-size: 18px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .product-buy .button {
-            min-height: 42px;
-            padding: 0 14px;
-            font-size: 13px;
-        }
-
-        .about-band {
-            padding: 52px max(32px, calc((100% - 1176px) / 2));
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 48px;
-            background: #e7e9df;
-        }
-
-        .about-mark {
-            min-height: 230px;
-            display: grid;
-            place-items: center;
-            background: var(--green);
-            color: var(--yellow);
-            font-family: Fraunces, Georgia, serif;
-            font-size: 34px;
-            text-align: center;
-        }
-
-        .about-copy h2 { margin-top: 8px; }
-
-        .cart-section {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 76px 32px 88px;
-        }
-
-        .cart-panel {
-            padding: 24px;
-            background: var(--white);
-            border: 1px solid var(--line);
-            border-radius: 5px;
-        }
-
-        .cart-items {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .cart-item {
-            padding: 14px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 18px;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .cart-item-name { font-weight: 600; }
-
-        .cart-item-detail {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .remove-button {
-            padding: 8px 0 8px 12px;
-            border: 0;
-            background: transparent;
-            color: var(--coral);
-            font: inherit;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .cart-summary {
-            padding-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            font-weight: 700;
-        }
-
-        .cart-empty,
-        .demo-note {
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        .demo-note {
-            margin: 16px 0 0;
-            font-size: 12px;
-        }
-
-        footer {
-            padding: 28px 6vw;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            background: var(--ink);
-            color: white;
-            font-size: 13px;
-        }
-
-        footer p { margin: 0; }
-
-        @keyframes arrive {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 760px) {
-            .site-header {
-                min-height: 68px;
-                padding: 12px 20px;
-                flex-wrap: wrap;
-            }
-
-            .main-nav {
-                order: 3;
-                width: 100%;
-                justify-content: space-between;
-                gap: 12px;
-                padding: 8px 0 2px;
-            }
-
-            .hero {
-                min-height: 420px;
-                padding: 54px 24px;
-                background-position: 58% center;
-            }
-
-            h1 { font-size: 46px; }
-
-            main,
-            .cart-section { padding: 54px 20px; }
-
-            .section-heading {
-                align-items: start;
-                flex-direction: column;
-            }
-
-            .section-heading h2,
-            .about-copy h2,
-            .cart-section h2 { font-size: 32px; }
-
-            .product-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .product-description { min-height: auto; }
-
-            .about-band {
-                padding: 36px 20px;
-                grid-template-columns: 1fr;
-                gap: 28px;
-            }
-
-            .about-mark { min-height: 170px; }
-            footer { flex-direction: column; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                animation-duration: .01ms !important;
-                transition-duration: .01ms !important;
-            }
-        }
+        @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; } }
     </style>
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="#start">
-            Milenas Klangladen
-            <span>Instrumente mit Gefühl</span>
-        </a>
-
-        <nav class="main-nav" aria-label="Hauptnavigation">
-            <a href="#instrumente">Instrumente</a>
-            <a href="#ueber-mich">Über mich</a>
-        </nav>
-
-        <a class="cart-link" href="#warenkorb">
-            Warenkorb <span id="cart-count">0</span>
-        </a>
+        <a class="brand" href="#start">Milenas Klangladen<span>Instrumente mit Gefühl</span></a>
+        <nav class="main-nav" aria-label="Hauptnavigation"><a href="#instrumente">Instrumente</a><a href="#bilder">Bilder</a><a href="#ueber-mich">Über mich</a></nav>
+        <a class="cart-link" href="#warenkorb">Warenkorb <span id="cart-count">0</span></a>
     </header>
-
     <section class="hero" id="start" aria-labelledby="hero-title">
-        <div class="hero-copy">
-            <p class="eyebrow">Milenas Musikladen</p>
-            <h1 id="hero-title">Finde deinen <em>eigenen Sound.</em></h1>
-            <p>Musik fängt mit dem richtigen Instrument an. Ich habe hier ein paar Lieblingsstücke für deinen nächsten großen oder ganz kleinen Anfang zusammengestellt.</p>
-            <a class="button" href="#instrumente">Instrumente entdecken</a>
-        </div>
+        <div class="hero-copy"><p class="eyebrow">Milenas Musikladen</p><h1 id="hero-title">Finde deinen <em>eigenen Sound.</em></h1><p>Musik fängt mit dem richtigen Instrument an. Ich habe hier ein paar Lieblingsstücke für deinen nächsten großen oder ganz kleinen Anfang zusammengestellt.</p><a class="button" href="#instrumente">Instrumente entdecken</a></div>
     </section>
-
     <main id="instrumente">
-        <div class="section-heading">
-            <div>
-                <p class="eyebrow">Kleine Auswahl, große Klänge</p>
-                <h2>Meine Instrumente</h2>
-            </div>
-            <p>Ein paar Ideen für den Start<br>oder fürs nächste Lieblingslied.</p>
-        </div>
-
+        <div class="section-heading"><div><p class="eyebrow">Kleine Auswahl, große Klänge</p><h2>Meine Instrumente</h2></div><p>Ein paar Ideen für den Start<br>oder fürs nächste Lieblingslied.</p></div>
         <div class="product-grid">
-            <article class="product" data-name="Akustikgitarre" data-price="189">
-                <div class="product-image-wrap" id="guitar-swipe-area">
-                    <img
-                        id="guitar-image"
-                        src="gitarre-1.jpg"
-                        alt="Akustikgitarre – erste Ansicht"
-                    >
-                    <button
-                        class="image-swap-button"
-                        id="guitar-image-toggle"
-                        type="button"
-                        aria-controls="guitar-image"
-                    >
-                        Weitere Ansicht ansehen
-                    </button>
-                </div>
-
-                <div class="product-info">
-                    <p class="product-kind">Saiteninstrument</p>
-                    <h3>Akustikgitarre</h3>
-                    <p class="product-description">Warm im Klang und bereit für den ersten Akkord am Lagerfeuer.</p>
-                    <div class="product-buy">
-                        <span class="price">189,00 €</span>
-                        <button class="button add-button" type="button">In den Warenkorb</button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="product" data-name="E-Piano" data-price="429">
-                <img src="e-piano.jpg" alt="E-Piano mit Tastatur und Ständer" loading="lazy">
-
-                <div class="product-info">
-                    <p class="product-kind">Tasteninstrument</p>
-                    <h3>E-Piano</h3>
-                    <p class="product-description">Für leise Übungsstunden, große Melodien und alles dazwischen.</p>
-                    <div class="product-buy">
-                        <span class="price">429,00 €</span>
-                        <button class="button add-button" type="button">In den Warenkorb</button>
-                    </div>
-                </div>
-            </article>
-
-            <article class="product" data-name="Cajón" data-price="79">
-                <img src="cajon.jpg" alt="Cajón aus Holz" loading="lazy">
-
-                <div class="product-info">
-                    <p class="product-kind">Percussion</p>
-                    <h3>Cajón</h3>
-                    <p class="product-description">Klein genug fürs Wohnzimmer, rhythmisch genug für jede Runde.</p>
-                    <div class="product-buy">
-                        <span class="price">79,00 €</span>
-                        <button class="button add-button" type="button">In den Warenkorb</button>
-                    </div>
-                </div>
-            </article>
+            <article class="product" data-name="Akustikgitarre" data-price="189"><div class="product-image-wrap"><img id="guitar-image" src="gitarre-1.jpg" alt="Akustikgitarre – erste Ansicht"><button class="image-swap-button" id="guitar-image-toggle" type="button" aria-controls="guitar-image">Weitere Ansicht ansehen</button></div><div class="product-info"><p class="product-kind">Saiteninstrument</p><h3>Akustikgitarre</h3><p class="product-description">Warm im Klang und bereit für den ersten Akkord am Lagerfeuer.</p><div class="product-buy"><span class="price">189,00 €</span><button class="button add-button" type="button">In den Warenkorb</button></div></div></article>
+            <article class="product" data-name="E-Piano" data-price="429"><img src="e-piano.jpg" alt="E-Piano mit Tastatur und Ständer" loading="lazy"><div class="product-info"><p class="product-kind">Tasteninstrument</p><h3>E-Piano</h3><p class="product-description">Für leise Übungsstunden, große Melodien und alles dazwischen.</p><div class="product-buy"><span class="price">429,00 €</span><button class="button add-button" type="button">In den Warenkorb</button></div></div></article>
+            <article class="product" data-name="Cajón" data-price="79"><img src="cajon.jpg" alt="Cajón aus Holz" loading="lazy"><div class="product-info"><p class="product-kind">Percussion</p><h3>Cajón</h3><p class="product-description">Klein genug fürs Wohnzimmer, rhythmisch genug für jede Runde.</p><div class="product-buy"><span class="price">79,00 €</span><button class="button add-button" type="button">In den Warenkorb</button></div></div></article>
         </div>
-    </main>
-
-    <section class="about-band" id="ueber-mich">
-        <div class="about-mark" aria-hidden="true">
-            Musik ist<br>für alle da.
-        </div>
-
-        <div class="about-copy">
-            <p class="eyebrow">Ein bisschen persönlich</p>
-            <h2>Warum Milenas Klangladen?</h2>
-            <p>Ich finde: Man muss kein Profi sein, um Musik zu machen. Hier sollst du Instrumente entdecken können, die neugierig machen und Lust aufs Ausprobieren wecken. Das hier ist mein Anfang; der Laden darf mit deinen Ideen wachsen.</p>
-        </div>
-    </section>
-
-    <section class="cart-section" id="warenkorb" aria-labelledby="cart-title">
-        <p class="eyebrow">Deine Auswahl</p>
-        <h2 id="cart-title">Warenkorb</h2>
-
-        <div class="cart-panel" aria-live="polite">
-            <p class="cart-empty" id="cart-empty">
-                Dein Warenkorb ist noch leer. Such dir ein Instrument aus!
-            </p>
-
-            <ul class="cart-items" id="cart-items"></ul>
-
-            <div class="cart-summary">
-                <span>Zwischensumme</span>
-                <span id="cart-total">0,00 €</span>
+        <section class="gallery-section" id="bilder" aria-labelledby="gallery-title">
+            <h2 id="gallery-title">Alle Instrumentenbilder</h2>
+            <p class="gallery-intro">Hier kannst du alle vier Bilder ansehen oder sie zusammen als ZIP-Datei herunterladen.</p>
+            <div class="gallery-grid">
+                <div class="gallery-card"><img src="gitarre-1.jpg" alt="Akustikgitarre, erste Ansicht" loading="lazy"><p>Akustikgitarre – Ansicht 1</p></div>
+                <div class="gallery-card"><img src="gitarre-2.jpg" alt="Akustikgitarre, zweite Ansicht" loading="lazy"><p>Akustikgitarre – Ansicht 2</p></div>
+                <div class="gallery-card"><img src="e-piano.jpg" alt="E-Piano mit Tastatur und Ständer" loading="lazy"><p>E-Piano</p></div>
+                <div class="gallery-card"><img src="cajon.jpg" alt="Cajón aus Holz" loading="lazy"><p>Cajón</p></div>
             </div>
-
-            <p class="demo-note">
-                Dies ist ein Shop-Entwurf mit Beispielprodukten. Bezahlung und Bestellung sind noch nicht angebunden.
-            </p>
-        </div>
-    </section>
-
-    <footer>
-        <p>Milenas Klangladen</p>
-        <p>Mit Freude an Musik zusammengestellt.</p>
-    </footer>
-
+            <div class="download-row"><button class="button" id="download-zip" type="button">Alle Bilder als ZIP herunterladen</button><p class="download-help" id="download-status" role="status">Die ZIP-Datei enthält die vier JPGs und eine HTML-Bildergalerie.</p></div>
+        </section>
+    </main>
+    <section class="about-band" id="ueber-mich"><div class="about-mark" aria-hidden="true">Musik ist<br>für alle da.</div><div class="about-copy"><p class="eyebrow">Ein bisschen persönlich</p><h2>Warum Milenas Klangladen?</h2><p>Ich finde: Man muss kein Profi sein, um Musik zu machen. Hier sollst du Instrumente entdecken können, die neugierig machen und Lust aufs Ausprobieren wecken. Das hier ist mein Anfang; der Laden darf mit deinen Ideen wachsen.</p></div></section>
+    <section class="cart-section" id="warenkorb" aria-labelledby="cart-title"><p class="eyebrow">Deine Auswahl</p><h2 id="cart-title">Warenkorb</h2><div class="cart-panel" aria-live="polite"><p class="cart-empty" id="cart-empty">Dein Warenkorb ist noch leer. Such dir ein Instrument aus!</p><ul class="cart-items" id="cart-items"></ul><div class="cart-summary"><span>Zwischensumme</span><span id="cart-total">0,00 €</span></div><p class="demo-note">Dies ist ein Shop-Entwurf mit Beispielprodukten. Bezahlung und Bestellung sind noch nicht angebunden.</p></div></section>
+    <footer><p>Milenas Klangladen</p><p>Mit Freude an Musik zusammengestellt.</p></footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
         const cart = new Map();
         const cartCount = document.querySelector("#cart-count");
         const cartItems = document.querySelector("#cart-items");
         const cartEmpty = document.querySelector("#cart-empty");
         const cartTotal = document.querySelector("#cart-total");
-
-        const euro = new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR"
-        });
+        const euro = new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" });
 
         function renderCart() {
             cartItems.replaceChildren();
-
             let count = 0;
             let total = 0;
-
             for (const [name, item] of cart) {
                 count += item.quantity;
                 total += item.price * item.quantity;
-
                 const row = document.createElement("li");
                 row.className = "cart-item";
-
                 const details = document.createElement("div");
-
                 const productName = document.createElement("span");
                 productName.className = "cart-item-name";
                 productName.textContent = name;
-
                 const productDetail = document.createElement("span");
                 productDetail.className = "cart-item-detail";
-                productDetail.textContent =
-                    ` · ${item.quantity} × ${euro.format(item.price)}`;
-
+                productDetail.textContent = ` · ${item.quantity} × ${euro.format(item.price)}`;
                 details.append(productName, productDetail);
-
                 const remove = document.createElement("button");
                 remove.className = "remove-button";
                 remove.type = "button";
                 remove.textContent = "Entfernen";
-                remove.setAttribute(
-                    "aria-label",
-                    `${name} aus dem Warenkorb entfernen`
-                );
-
-                remove.addEventListener("click", () => {
-                    cart.delete(name);
-                    renderCart();
-                });
-
+                remove.setAttribute("aria-label", `${name} aus dem Warenkorb entfernen`);
+                remove.addEventListener("click", () => { cart.delete(name); renderCart(); });
                 row.append(details, remove);
                 cartItems.append(row);
             }
-
             cartCount.textContent = String(count);
             cartTotal.textContent = euro.format(total);
             cartEmpty.hidden = count > 0;
@@ -655,8 +167,7 @@
             product.querySelector(".add-button").addEventListener("click", () => {
                 const name = product.dataset.name;
                 const price = Number(product.dataset.price);
-                const item = cart.get(name) || { price, quantity: 0 };
-
+                const item = cart.get(name) || { price, quantity:0 };
                 item.quantity += 1;
                 cart.set(name, item);
                 renderCart();
@@ -665,52 +176,64 @@
 
         const guitarImage = document.querySelector("#guitar-image");
         const guitarToggle = document.querySelector("#guitar-image-toggle");
-
         const guitarViews = [
-            {
-                src: "gitarre-1.jpg",
-                alt: "Akustikgitarre – erste Ansicht",
-                nextButtonText: "Weitere Ansicht ansehen"
-            },
-            {
-                src: "gitarre-2.jpg",
-                alt: "Akustikgitarre – zweite Ansicht",
-                nextButtonText: "Erste Ansicht ansehen"
-            }
+            { src:"gitarre-1.jpg", alt:"Akustikgitarre – erste Ansicht", nextButtonText:"Weitere Ansicht ansehen" },
+            { src:"gitarre-2.jpg", alt:"Akustikgitarre – zweite Ansicht", nextButtonText:"Erste Ansicht ansehen" }
         ];
-
         let currentGuitarView = 0;
-
         function showNextGuitarView() {
             currentGuitarView = currentGuitarView === 0 ? 1 : 0;
-
             guitarImage.src = guitarViews[currentGuitarView].src;
             guitarImage.alt = guitarViews[currentGuitarView].alt;
-            guitarToggle.textContent =
-                guitarViews[currentGuitarView].nextButtonText;
+            guitarToggle.textContent = guitarViews[currentGuitarView].nextButtonText;
         }
-
         guitarToggle.addEventListener("click", showNextGuitarView);
-
         let swipeStartX = null;
-
-        guitarImage.addEventListener("pointerdown", (event) => {
-            swipeStartX = event.clientX;
-        });
-
+        guitarImage.addEventListener("pointerdown", (event) => { swipeStartX = event.clientX; });
         guitarImage.addEventListener("pointerup", (event) => {
             if (swipeStartX === null) return;
-
             const swipeDistance = event.clientX - swipeStartX;
             swipeStartX = null;
-
-            if (Math.abs(swipeDistance) > 40) {
-                showNextGuitarView();
-            }
+            if (Math.abs(swipeDistance) > 40) showNextGuitarView();
         });
+        guitarImage.addEventListener("pointercancel", () => { swipeStartX = null; });
 
-        guitarImage.addEventListener("pointercancel", () => {
-            swipeStartX = null;
+        const imageFiles = ["gitarre-1.jpg", "gitarre-2.jpg", "e-piano.jpg", "cajon.jpg"];
+        const zipButton = document.querySelector("#download-zip");
+        const downloadStatus = document.querySelector("#download-status");
+        zipButton.addEventListener("click", async () => {
+            if (typeof JSZip === "undefined") {
+                downloadStatus.textContent = "Die ZIP-Bibliothek konnte nicht geladen werden. Bitte prüfe deine Internetverbindung und versuche es erneut.";
+                return;
+            }
+            zipButton.disabled = true;
+            downloadStatus.textContent = "Die ZIP-Datei wird vorbereitet …";
+            try {
+                const zip = new JSZip();
+                const imageFolder = zip.folder("bilder");
+                await Promise.all(imageFiles.map(async (file) => {
+                    const response = await fetch(file);
+                    if (!response.ok) throw new Error(`Bild konnte nicht geladen werden: ${file}`);
+                    imageFolder.file(file, await response.blob());
+                }));
+                const galleryHtml = `<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Instrumentenbilder</title><style>body{margin:0;padding:24px;background:#f5f3ed;color:#20302d;font:16px Arial,sans-serif}h1{text-align:center}.bilder{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.bilder figure{margin:0;background:#fffefa;padding:10px;border-radius:6px}.bilder img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.bilder figcaption{padding:10px 0 2px}</style><h1>Milenas Instrumentenbilder</h1><main class="bilder"><figure><img src="bilder/gitarre-1.jpg" alt="Akustikgitarre – Ansicht 1"><figcaption>Akustikgitarre – Ansicht 1</figcaption></figure><figure><img src="bilder/gitarre-2.jpg" alt="Akustikgitarre – Ansicht 2"><figcaption>Akustikgitarre – Ansicht 2</figcaption></figure><figure><img src="bilder/e-piano.jpg" alt="E-Piano"><figcaption>E-Piano</figcaption></figure><figure><img src="bilder/cajon.jpg" alt="Cajón"><figcaption>Cajón</figcaption></figure></main></html>`;
+                zip.file("bilder-ansehen.html", galleryHtml);
+                const blob = await zip.generateAsync({ type:"blob" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "milenas-klangladen-bilder.zip";
+                document.body.append(link);
+                link.click();
+                link.remove();
+                URL.revokeObjectURL(url);
+                downloadStatus.textContent = "Fertig! ZIP-Datei mit den vier Bildern und der Bildergalerie wurde heruntergeladen.";
+            } catch (error) {
+                console.error(error);
+                downloadStatus.textContent = "Der Download ist fehlgeschlagen. Bitte lade die Seite erneut und versuche es noch einmal.";
+            } finally {
+                zipButton.disabled = false;
+            }
         });
     </script>
 </body>
