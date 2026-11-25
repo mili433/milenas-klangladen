@@ -1,7 +1,4 @@
-milenas-klangladen/
-├── index.html
-└── bilder/
-    ├── gitarre-1.jpg
-    ├── gitarre-2.jpg
-    ├── cajon.jpg
-    └── e-piano.jpg
+bilder/gitarre-1.png
+bilder/gitarre-2.png
+bilder/cajon.png
+bilder/e-piano.png
